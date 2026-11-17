@@ -54,3 +54,4 @@ export interface SwipeResponse {
   matchedProfile?: Profile;
   message?: string;
 }
+

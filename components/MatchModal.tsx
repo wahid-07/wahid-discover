@@ -133,7 +133,7 @@ export const MatchModal: React.FC<MatchModalProps> = ({
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: [0, 1.3, 1] }}
-              transition={{ delay: 0.3, type: 'spring' }}
+              transition={{ delay: 0.3, type: 'tween', duration: 0.45, ease: 'easeOut' }}
               className="absolute z-20 w-11 h-11 rounded-full bg-gradient-to-tr from-rose-500 to-pink-500 flex items-center justify-center shadow-lg shadow-rose-500/50 border-2 border-slate-900"
             >
               <Heart className="w-6 h-6 text-white fill-white animate-bounce-subtle" />
@@ -162,3 +162,4 @@ export const MatchModal: React.FC<MatchModalProps> = ({
     </AnimatePresence>
   );
 };
+

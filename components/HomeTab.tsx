@@ -62,3 +62,4 @@ export const HomeTab: React.FC<HomeTabProps> = ({ onGoToDiscover }) => {
     </div>
   );
 };
+

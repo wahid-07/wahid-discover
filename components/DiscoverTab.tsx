@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Profile, SwipeDirection, SwipeResponse } from '@/lib/types';
-import { CardStack } from './CardStack';
+import { CardStack, CardStackHandle } from './CardStack';
 import { ActionButtons } from './ActionButtons';
 import { EmptyState } from './EmptyState';
 import { Loader2 } from 'lucide-react';
@@ -28,6 +28,7 @@ export const DiscoverTab: React.FC<DiscoverTabProps> = ({
   const [loading, setLoading] = useState(true);
   const [isSwiping, setIsSwiping] = useState(false);
   const [canRewind, setCanRewind] = useState(false);
+  const cardStackRef = useRef<CardStackHandle>(null);
 
   // Fetch Feed Profiles from backend
   const fetchFeed = useCallback(async () => {
@@ -49,9 +50,9 @@ export const DiscoverTab: React.FC<DiscoverTabProps> = ({
     fetchFeed();
   }, [fetchFeed]);
 
-  // Handle Swipe Action
-  const handleSwipe = async (direction: SwipeDirection) => {
-    if (profiles.length === 0 || isSwiping) return;
+  // Commits the swipe to state and backend
+  const handleSwipeCommit = async (direction: SwipeDirection) => {
+    if (profiles.length === 0) return;
 
     const currentProfile = profiles[0];
     setIsSwiping(true);
@@ -81,7 +82,17 @@ export const DiscoverTab: React.FC<DiscoverTabProps> = ({
     } finally {
       setTimeout(() => {
         setIsSwiping(false);
-      }, 300);
+      }, 150);
+    }
+  };
+
+  // Triggered by desktop action buttons or keyboard shortcuts
+  const triggerSwipeAction = (direction: SwipeDirection) => {
+    if (isSwiping || profiles.length === 0) return;
+    if (cardStackRef.current) {
+      cardStackRef.current.swipe(direction);
+    } else {
+      handleSwipeCommit(direction);
     }
   };
 
@@ -109,14 +120,14 @@ export const DiscoverTab: React.FC<DiscoverTabProps> = ({
         return;
       }
 
-      if (profiles.length === 0) return;
+      if (profiles.length === 0 || isSwiping) return;
 
       if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
         e.preventDefault();
-        handleSwipe('like');
+        triggerSwipeAction('like');
       } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
         e.preventDefault();
-        handleSwipe('pass');
+        triggerSwipeAction('pass');
       } else if (e.key === 'Backspace' || e.key === 'z' || e.key === 'Z') {
         e.preventDefault();
         handleRewind();
@@ -153,17 +164,19 @@ export const DiscoverTab: React.FC<DiscoverTabProps> = ({
   }
 
   return (
-    <div className="flex-1 w-full max-w-md mx-auto flex flex-col justify-between px-3 pt-2 pb-1 select-none animate-fadeIn">
+    <div className="flex-1 w-full max-w-md mx-auto flex flex-col justify-between px-3 pt-1 pb-1 select-none overflow-hidden animate-fadeIn">
       {/* Interactive Card Stack */}
       <CardStack
+        ref={cardStackRef}
         profiles={profiles}
-        onSwipe={handleSwipe}
+        onSwipe={handleSwipeCommit}
         onOpenDetails={onOpenDetails}
+        isSwipingBlocked={isSwiping}
       />
 
       {/* Action Buttons Bar */}
       <ActionButtons
-        onSwipe={handleSwipe}
+        onSwipe={triggerSwipeAction}
         onRewind={handleRewind}
         onOpenDetails={() => profiles[0] && onOpenDetails(profiles[0])}
         canRewind={canRewind}

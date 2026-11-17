@@ -109,4 +109,51 @@ test('Coy Discovery Tab Backend Logic & Privacy Tests', async (t) => {
     const matchesAfterReset = getMatches();
     assert.strictEqual(matchesAfterReset.length, 0, 'Matches should be empty after reset');
   });
+
+  await t.test('9. Invalid swipe input handling (non-existent profiles)', () => {
+    const invalidResult = recordSwipe('non_existent_id_999', 'like');
+    assert.strictEqual(invalidResult.success, false);
+    assert.strictEqual(invalidResult.match, false);
+    assert.ok(invalidResult.message?.includes('not found'));
+  });
+
+  await t.test('10. End-to-end user journey matching flow test', () => {
+    resetDatabase();
+
+    // 1. Open Discover
+    const initialFeed = getFeedProfiles();
+    assert.strictEqual(initialFeed[0].id, 'p1', 'First profile should be Aria Vance');
+    assert.strictEqual(initialFeed[1].id, 'p2', 'Second profile should be Sarah Chen');
+
+    // 2. Pass first profile (Aria Vance)
+    const passAria = recordSwipe(initialFeed[0].id, 'pass');
+    assert.strictEqual(passAria.success, true);
+    assert.strictEqual(passAria.match, false);
+
+    // 3. Like second profile (Sarah Chen)
+    const likeSarah = recordSwipe(initialFeed[1].id, 'like');
+    assert.strictEqual(likeSarah.success, true);
+    assert.strictEqual(likeSarah.match, true, 'Mutual match should be established with Sarah Chen');
+    assert.strictEqual(likeSarah.matchedProfile?.name, 'Sarah Chen');
+
+    // 4. Like third profile (Liam Gallagher - not in inbound likes)
+    const likeLiam = recordSwipe('p3', 'like');
+    assert.strictEqual(likeLiam.success, true);
+    assert.strictEqual(likeLiam.match, false, 'One-sided like should not create a match');
+
+    // 5. Verify Matches tab: ONLY mutual matches are returned (Sarah Chen only, NOT Liam, NOT Aria)
+    const currentMatches = getMatches();
+    assert.strictEqual(currentMatches.length, 1, 'Only mutual matches should exist');
+    assert.strictEqual(currentMatches[0].profile.name, 'Sarah Chen');
+
+    // 6. Verify one-sided likes (Liam p3) are NEVER revealed as matches
+    assert.ok(!currentMatches.some((m) => m.profileId === 'p3'), 'One-sided like must never appear in matches');
+
+    // 7. Verify swiped profiles (p1, p2, p3) are excluded from feed
+    const updatedFeed = getFeedProfiles();
+    assert.ok(!updatedFeed.some((p) => p.id === 'p1'));
+    assert.ok(!updatedFeed.some((p) => p.id === 'p2'));
+    assert.ok(!updatedFeed.some((p) => p.id === 'p3'));
+  });
 });
+

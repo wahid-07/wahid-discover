@@ -21,7 +21,12 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
   isTopCard = true,
 }) => {
   const [activePhotoIdx, setActivePhotoIdx] = useState(0);
+  const [imgSrc, setImgSrc] = useState<string | null>(null);
   const photos = profile.photos && profile.photos.length > 0 ? profile.photos : [profile.photo];
+
+  React.useEffect(() => {
+    setImgSrc(null);
+  }, [profile.id, activePhotoIdx]);
 
   const handleNextPhoto = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -38,10 +43,15 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
       {/* Photo Carousel & Navigation tap areas */}
       <div className="absolute inset-0 z-0">
         <img
-          src={photos[activePhotoIdx]}
+          src={imgSrc || photos[activePhotoIdx]}
           alt={profile.name}
           className="w-full h-full object-cover pointer-events-none"
           loading="eager"
+          onError={() => {
+            if (!imgSrc) {
+              setImgSrc('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80');
+            }
+          }}
         />
 
         {/* Multi-photo Segment Bars */}
@@ -182,3 +192,4 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
     </div>
   );
 };
+
