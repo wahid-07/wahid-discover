@@ -560,7 +560,7 @@ When all 3 slots are locked on non-responsive contacts, the user's Coy experienc
 ## Author & Acknowledgments
 
 **Wahid Naseem**  
-- **GitHub**: [github.com/wahidnaseem](https://github.com/wahidnaseem)  
-- **LinkedIn**: [linkedin.com/in/wahidnaseem](https://linkedin.com/in/wahidnaseem)  
+- **GitHub**: [github.com/wahid-07](hhttps://github.com/wahid-07)  
+- **Portfolio**: [https://wahidportfolio.onrender.com/](https://wahidportfolio.onrender.com/)  
 
 Developed with care for the **Coy SDE Intern Assignment**. Special thanks to the Coy engineering team for the thoughtful prompt and real-world consumer problem framing.
