@@ -1,6 +1,6 @@
-# Coy — SDE Intern Assignment
+# Wahid (Coy SDE Intern Assignment) — Discover Application
 
-A modern, mobile-first implementation of the **Discover** tab for **Coy** (`getcoy.com`), alongside a comprehensive product critique and feature proposal for Coy's core consumer experience.
+A modern, mobile-first implementation of the **Discover** tab branded as **Wahid** for the **Coy SDE Intern Assignment**, alongside a comprehensive product critique and feature proposal for Coy's core consumer experience.
 
 ---
 

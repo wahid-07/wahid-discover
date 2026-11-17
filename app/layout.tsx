@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Coy | Discover & Mutual Crush Matching',
-  description: 'Double-blind mutual crush matching and swipe discovery for Coy.',
+  title: 'Wahid | Discover',
+  description: 'Double-blind mutual crush matching and swipe discovery for Wahid.',
 };
 
 export const viewport: Viewport = {

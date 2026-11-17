@@ -28,7 +28,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({ profile, onClose }) => {
     {
       id: 'm0',
       sender: 'match',
-      text: `Hey! I'm so happy we both matched on Coy! 😊`,
+      text: `Hey! I'm so happy we both matched on Wahid! 😊`,
       time: 'Just now',
     },
   ]);

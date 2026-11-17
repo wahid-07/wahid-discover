@@ -73,7 +73,7 @@ export const MatchesView: React.FC<MatchesViewProps> = ({
           <div>
             <h3 className="text-lg font-bold text-white mb-1">No Matches Yet</h3>
             <p className="text-xs text-slate-400 max-w-xs leading-relaxed">
-              In Coy, matches only happen when someone you like also likes you back. Keep swiping on the Discover tab to find your match!
+              In Wahid, matches only happen when someone you like also likes you back. Keep swiping on the Discover tab to find your match!
             </p>
           </div>
 

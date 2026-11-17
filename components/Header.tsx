@@ -32,7 +32,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
         <div>
           <span className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-rose-400 via-pink-300 to-amber-200 bg-clip-text text-transparent">
-            coy
+            wahid
           </span>
           <span className="ml-1 text-[10px] font-bold tracking-widest uppercase px-1.5 py-0.5 rounded-full bg-rose-500/10 text-rose-400 border border-rose-500/20">
             Discover
